@@ -5,13 +5,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private Rigidbody m_Rigidbody;
-
-    void Start()
-    {
-        m_Rigidbody = GetComponent<Rigidbody>();
-    }
+    /* Properties */
+    [SerializeField] Rigidbody m_Rigidbody; // Is the rigidbody for the ball in game. Set in editor.
     
+    // Runs code when an object exits the collision area of the ball.
     private void OnCollisionExit(Collision other)
     {
         var velocity = m_Rigidbody.velocity;
