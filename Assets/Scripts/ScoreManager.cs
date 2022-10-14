@@ -5,7 +5,7 @@ public class ScoreManager : MonoBehaviour
 {
     /* Properties */
 
-    ScoreManager ScoreManagerInstance; // The ScoreManager object instance. Is set in the Awake() method.
+    public static ScoreManager ScoreManagerInstance; // The ScoreManager object instance. Is set in the Awake() method.
     string HighScoreName = "UNNAMED"; // Will hold data on the high score's name. 
     int HighScoreValue = 0; // Will hold data on the high score's score.
 
@@ -24,6 +24,9 @@ public class ScoreManager : MonoBehaviour
 
         // TO-DO: MAKE SURE THAT ONLY 1 INSTANCE OF THE ScoreManager OBJECT SHOULD BE INSTANTIATED DURING THE RUNTIME>
     }
+
+    // Returns HighScoreName & HighScoreValue as a string.
+    public string HighScoreToString() => $"{HighScoreName}, {HighScoreValue}";
 
     // Is a protected sub-class of ScoreManager, meant to be a placeholder to write/read JSON files. Contains the HighScoreName & HighScoreValue properties as string.
     [System.Serializable]
