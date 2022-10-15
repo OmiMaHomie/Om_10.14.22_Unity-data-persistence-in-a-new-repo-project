@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-// A universal class that holds methods to transition between scenes.
+// A universal class that holds methods to transition between scenes. Will hold data that'll also need to be passed between scenes too.
 public class ButtonUtilites : MonoBehaviour
 {
     /* Methods */
@@ -13,7 +13,11 @@ public class ButtonUtilites : MonoBehaviour
     public static void GoToMenu() => SceneManager.LoadScene(0);
 
     // Loads the game scene.
-    public static void GoToGame() => SceneManager.LoadScene(1);
+    public static void GoToGame()
+    {
+        ScoreManager.ScoreManagerInstance.SetCurrentName();
+        SceneManager.LoadScene(1);
+    }
 
     // Quits the application in a build version, and exits play mode in the editor.
     public static void Quit()

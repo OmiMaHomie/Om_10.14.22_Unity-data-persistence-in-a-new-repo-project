@@ -7,9 +7,6 @@ public class MenuUIManager : MonoBehaviour
 {
     /* Properties */
     [SerializeField] TMP_Text HighScoreText; // The Best Score Text textfield. Set in editor.
-    [SerializeField] TMP_InputField NameInputField; // The Input Name inputfield. Set in editor.
-    string CurrentName = "UNNAMED"; // The current name of the player.
-
 
     /* Methods */
 
@@ -17,12 +14,6 @@ public class MenuUIManager : MonoBehaviour
     void Start()
     {
         DisplayHighScore();
-    }
-
-    // Is ran ever frame.
-    void Update()
-    {
-       
     }
 
     // Transitions to the main scene.
@@ -33,11 +24,4 @@ public class MenuUIManager : MonoBehaviour
 
     // Sets the Best Score Text to be the HighScoreName & HighScorValue (from ScoreManager script).
     public void DisplayHighScore() => HighScoreText.text = ScoreManager.ScoreManagerInstance.HighScoreToString();
-
-    // Sets CurrentName to be what's inNameInputField
-    void SetName()
-    {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) && String.IsNullOrWhiteSpace(NameInputField.text))
-            CurrentName = NameInputField.text;
-    }
 }

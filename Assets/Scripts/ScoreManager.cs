@@ -1,13 +1,19 @@
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
     /* Properties */
 
     public static ScoreManager ScoreManagerInstance; // The ScoreManager object instance. Is set in the Awake() method.
-    string HighScoreName = "UNNAMED"; // Will hold data on the high score's name. 
-    int HighScoreValue = 0; // Will hold data on the high score's score.
+
+    TMP_Text NameInputField; // The textfield of gameObject Input Name. Set in editor.
+    string HighScoreName = "UNNAMED"; // Holds data on the high score's name. Is universal.
+    string CurrentName = "UNNAMED"; // Holds data on the current user's name. Is universal.
+    int HighScoreValue = 0; // Holds data on the high score's score. Is universal.
+    int CurrentValue = 0; // Holds data on the current user's score. Is universal.
 
 
     /* Methods */
@@ -21,14 +27,50 @@ public class ScoreManager : MonoBehaviour
             ScoreManagerInstance = this;
             DontDestroyOnLoad(ScoreManagerInstance);
         }
+        // Else destroy the duplicate ScoreManager gameObject.
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // If in the menu scene, initalize the NameInputField.
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            SetNameInputField();
 
         // TO-DO: MAKE SURE THAT ONLY 1 INSTANCE OF THE ScoreManager OBJECT SHOULD BE INSTANTIATED DURING THE RUNTIME>
     }
 
-    // Returns HighScoreName & HighScoreValue as a string.
-    public string HighScoreToString() => $"{HighScoreName}, {HighScoreValue}";
+    // Initalizes NameInputField.
+    void SetNameInputField()
+    {
+        // Gets all textfields from the Name Input gameObject.
+        TMP_Text[] nameInputTextfields = GameObject.Find("Canvas").GetComponentInChildren<TMP_InputField>().GetComponentsInChildren<TMP_Text>();
 
-    // Is a protected sub-class of ScoreManager, meant to be a placeholder to write/read JSON files. Contains the HighScoreName & HighScoreValue properties as string.
+        // Finds the textfield that's named "Text", and sets NameInputField to be that textfield.
+        foreach (TMP_Text textfield in nameInputTextfields)
+        {
+            if (textfield.name == "Text")
+            {
+                NameInputField = textfield;
+                Debug.Log($"NameInputField is set to {NameInputField.name} textfield.");
+                break;
+            }
+        }
+    }
+
+    // Sets CurrentName as the textfield in NameInputField (if NameInputField has something inside of it).
+    public void SetCurrentName()
+    {
+        if (!string.IsNullOrWhiteSpace(NameInputField.text))
+        {
+            CurrentName = NameInputField.text;
+            Debug.Log($"Current name: {CurrentName}.");
+        }
+    }
+
+
+    // Is a protected sub-class of ScoreManager, meant to be a placeholder to write/read JSON files. Contains the HighScoreName & HighScoreValue properties.
     [System.Serializable]
     protected class HighScoreData
     {
@@ -56,7 +98,7 @@ public class ScoreManager : MonoBehaviour
         string jsonFilePath = Application.persistentDataPath + "/highscorefile.json";
 
         // If highscorefile.json exists, run the following.
-        if(File.Exists(jsonFilePath))
+        if (File.Exists(jsonFilePath))
         {
             // Convert the json code into a string, and turn the json data into C# data by putting it back into a new HighScoreData class.
             string json = File.ReadAllText(jsonFilePath);
@@ -67,4 +109,8 @@ public class ScoreManager : MonoBehaviour
             HighScoreValue = data.HighScoreValue;
         }
     }
+
+
+    // Returns HighScoreName & HighScoreValue as a string.
+    public string HighScoreToString() => $"{HighScoreName}, {HighScoreValue}";
 }
