@@ -5,11 +5,8 @@ using UnityEngine;
 
 public class DeathZone : MonoBehaviour
 {
-    /* Properties */
     public MainManager Manager;
 
-
-    /* Methods */
     private void OnCollisionEnter(Collision other)
     {
         Destroy(other.gameObject);
